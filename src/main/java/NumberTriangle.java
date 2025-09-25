@@ -89,15 +89,8 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        NumberTriangle node = this;
-        for (char c : path.toCharArray()) {
-            if (c == 'l') {
-                node = node.left;
-            } else if (c == 'r') {
-                node = node.right;
-            }
-        }
-        return node.root;
+        // TODO implement this method
+        return -1;
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -115,6 +108,8 @@ public class NumberTriangle {
         // open the file and get a BufferedReader object whose methods
         // are more convenient to work with when reading the file contents.
         InputStream in = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
+        if (in == null) throw new FileNotFoundException(fname);
+
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
         NumberTriangle top = null;
@@ -127,7 +122,7 @@ public class NumberTriangle {
             for (String t : toks) {
                 curr.add(new NumberTriangle(Integer.parseInt(t)));
             }
-            if (top == null) top = curr.get(0); // set top once
+            if (top == null) top = curr.get(0);
             if (prev != null) {
                 for (int i = 0; i < prev.size(); i++) {
                     prev.get(i).setLeft(curr.get(i));
