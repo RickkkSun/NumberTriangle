@@ -110,22 +110,27 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
+        String line;
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
 
-        String line = br.readLine();
-        while (line != null) {
+        java.util.List<NumberTriangle> prev = null;
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-
-            // TODO process the line
-
-            //read the next line
-            line = br.readLine();
+        while ((line = br.readLine()) != null) {
+            if (line.trim().isEmpty()) continue;
+            String[] toks = line.trim().split("\\s+");
+            java.util.List<NumberTriangle> curr = new java.util.ArrayList<>();
+            for (String t : toks) curr.add(new NumberTriangle(Integer.parseInt(t)));
+            if (top == null) top = curr.get(0);
+            if (prev != null) {
+                for (int i = 0; i < prev.size(); i++) {
+                    prev.get(i).setLeft(curr.get(i));
+                    prev.get(i).setRight(curr.get(i + 1));
+                }
+            }
+            prev = curr;
         }
         br.close();
         return top;
