@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -89,8 +90,12 @@ public class NumberTriangle {
      */
     public int retrieve(String path) {
         NumberTriangle node = this;
-        for (int i = 0; i < path.length(); i++) {
-            node = (path.charAt(i) == 'l') ? node.left : node.right;
+        for (char c : path.toCharArray()) {
+            if (c == 'l') {
+                node = node.left;
+            } else if (c == 'r') {
+                node = node.right;
+            }
         }
         return node.root;
     }
@@ -109,24 +114,20 @@ public class NumberTriangle {
     public static NumberTriangle loadTriangle(String fname) throws IOException {
         // open the file and get a BufferedReader object whose methods
         // are more convenient to work with when reading the file contents.
-        InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-
+        InputStream in = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
-
-        // will need to return the top of the NumberTriangle,
-        // so might want a variable for that.
         NumberTriangle top = null;
-
-        java.util.List<NumberTriangle> prev = null;
+        List<NumberTriangle> prev = null;
 
         while ((line = br.readLine()) != null) {
             if (line.trim().isEmpty()) continue;
             String[] toks = line.trim().split("\\s+");
-            java.util.List<NumberTriangle> curr = new java.util.ArrayList<>();
-            for (String t : toks) curr.add(new NumberTriangle(Integer.parseInt(t)));
-            if (top == null) top = curr.get(0);
+            List<NumberTriangle> curr = new ArrayList<>();
+            for (String t : toks) {
+                curr.add(new NumberTriangle(Integer.parseInt(t)));
+            }
+            if (top == null) top = curr.get(0); // set top once
             if (prev != null) {
                 for (int i = 0; i < prev.size(); i++) {
                     prev.get(i).setLeft(curr.get(i));
